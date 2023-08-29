@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Country Currency Search</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("form").submit(function(event) {
+                event.preventDefault();
+                var countryName = $("#country").val().replace(" ", "_");
+                $.get("/search/" + countryName, function(data) {
+                    $("#result").html(data.message);
+                });
+            });
+        });
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-8">
+        <h1 class="text-2xl font-semibold mb-4">Country Currency Search</h1>
+        <form>
+            <div class="flex">
+                <label for="country" class="mr-2 mt-1">Enter Country Name:</label>
+                <input type="text" id="country" name="country" class="border rounded px-2 py-1 flex-1" required>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Search</button>
+            </div>
+        </form>
+        <div id="result" class="mt-4"></div>
+    </div>
+</body>
+</html>
+</html>
