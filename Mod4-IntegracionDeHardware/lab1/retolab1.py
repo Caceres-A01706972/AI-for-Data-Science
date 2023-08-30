@@ -3,15 +3,22 @@ from flask_restful import Resource, Api, reqparse
 from forex_python.converter import CurrencyRates
 
 import json
+import os
 
-app = Flask("CountryAPI")
+
+# Get the path of the current script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the path to the countries.json file
+countries_file_path = os.path.join(current_dir, 'countries.json')
+
+template_folder_path = os.path.join(current_dir, 'templates')
+app = Flask("CountryAPI", template_folder=template_folder_path)
 api = Api(app)
 
 # Load countries from JSON file
-# Load countries from JSON file with explicit encoding
-with open('countries.json', 'r', encoding='utf-8') as f:
+with open(countries_file_path, 'r', encoding='utf-8') as f:
     countries = json.load(f)
-
 
 class AllCountries(Resource):
     def get(self):
@@ -50,7 +57,7 @@ class CurrencyExchange(Resource):
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html")
+    return render_template('index.html')
 
 @app.route("/search/<string:country_param>", methods=["GET"])
 def search_country(country_param):
